@@ -24,7 +24,7 @@ bash build.sh
 
 ## Related projects
 
-- [Rensole-zh](https://github.com/marmooo/rensole-en) (English)
+- [Rensole-en](https://github.com/marmooo/rensole-en) (English)
 - [Rensole-ja](https://github.com/marmooo/rensole-ja) (Japanese)
 
 ## License
