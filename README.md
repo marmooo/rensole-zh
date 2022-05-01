@@ -10,7 +10,6 @@
   [cc.zh.300.vec.gz](https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.zh.300.vec.gz)
   from [fastText](https://fasttext.cc/docs/en/crawl-vectors.html) licensed under
   the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-- `npm install`
 - install [marmooo/siminym-zh](https://github.com/marmooo/siminym-zh) licensed
   under the [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 - `npm install`
