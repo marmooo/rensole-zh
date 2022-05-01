@@ -5,7 +5,6 @@
 ## Installation
 
 - install [fxsjy/jieba](https://github.com/fxsjy/jieba) licensed under the MIT
-  [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 - install
   [cc.zh.300.vec.gz](https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.zh.300.vec.gz)
   from [fastText](https://fasttext.cc/docs/en/crawl-vectors.html) licensed under
