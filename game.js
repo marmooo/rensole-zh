@@ -7,7 +7,6 @@ async function loadJiebaDict() {
   for await (const line of readLines(fileReader)) {
     const arr = line.split(" ");
     const word = arr[0];
-    if (word.length == 1) continue;
     const count = parseInt(arr[1]);
     dict.push([word, count]);
   }
@@ -19,22 +18,32 @@ async function loadJiebaDict() {
   return dict;
 }
 
-async function build(threshold) {
-  const result = [];
+async function build(grades, threshold) {
+  const words = [];
+  const poses = [];
   const jiebaDict = await loadJiebaDict();
-  jiebaDict.slice(0, threshold).forEach((data) => {
-    const word = data[0];
+  let gradePos = 0;
+  for (let i = 0; i < jiebaDict.length; i++) {
+    if (i >= threshold) break;
+    const word = jiebaDict[i][0];
+    if (word.length == 1) continue;
+    if (i == grades[gradePos] - 1) {
+      poses.push(words.length);
+      gradePos += 1;
+    }
     const yomis = pinyin(word);
     if (yomis.length > 0) {
       const yomi = yomis.join(" ");
-      result.push(`${word}\t${yomi}`);
+      words.push(`${word}\t${yomi}`);
     } else {
       console.log(`error: ${word}`);
     }
-  });
-  return result;
+  }
+  return [words, poses];
 }
 
+const grades = [1000, 3000, 5000, 10000];
 const threshold = 10000;
-const result = await build(threshold);
-Deno.writeTextFileSync("src/pronounce.tsv", result.join("\n"));
+const [words, poses] = await build(grades, threshold);
+const result = poses.join(",") + "\n" + words.join("\n");
+Deno.writeTextFileSync("src/pronounce.tsv", result);

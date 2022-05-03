@@ -250,7 +250,9 @@ function loadProblems() {
   return fetch("pronounce.tsv")
     .then((response) => response.text())
     .then((text) => {
-      text.trimEnd().split("\n").forEach((line) => {
+      const arr = text.trimEnd().split("\n");
+      gradePoses = arr[0].split(",").map(x => parseInt(x));
+      arr.slice(1).forEach((line) => {
         vocabularies.push(line.split("\t"));
       });
       loadWorkers();
@@ -313,8 +315,8 @@ async function changeProblem() {
 
 async function loadWorkers() {
   const obj = document.getElementById("grade");
-  const grade = obj.options[obj.selectedIndex].value;
-  problems = vocabularies.slice(0, parseInt(grade));
+  const pos = gradePoses[obj.selectedIndex];
+  problems = vocabularies.slice(0, pos);
   const promises = [
     loadSiminymWorker(),
     loadRensoWorker(),
@@ -342,6 +344,7 @@ function changeGrade() {
 }
 
 const vocabularies = [];
+let gradePoses = [];
 let problems = [];
 let replyCount = 0;
 let mostSimilars;
