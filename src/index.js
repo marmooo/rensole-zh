@@ -269,6 +269,7 @@ function loadProblems() {
   return fetch("pronounce.tsv")
     .then((response) => response.text())
     .then((text) => {
+      document.getElementById("loading").classList.remove("d-none");
       const arr = text.trimEnd().split("\n");
       gradePoses = arr[0].split(",").map((x) => parseInt(x));
       arr.slice(1).forEach((line) => {
