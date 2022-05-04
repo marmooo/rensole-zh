@@ -642,7 +642,7 @@ function pronounceHint(count) {
 }
 function wordHint(count) {
     switch(count){
-        case 0:
+        case 1:
             {
                 let hint = "";
                 for(let i = 0; i < answer.length; i++){
@@ -655,7 +655,7 @@ function wordHint(count) {
                     target: answer
                 };
             }
-        case 1:
+        case 2:
             {
                 const pos = getRandomInt(0, answer.length);
                 holedAnswer = holedAnswer.slice(0, pos) + answer[pos] + holedAnswer.slice(pos + 1);
