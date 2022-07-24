@@ -59,51 +59,40 @@ function escapeSql(sqlStr) {
 }(this, function() {
     return (()=>{
         "use strict";
-        var e1 = {
-            870: (e2, t2, n2)=>{
-                n2.r(t2), n2.d(t2, {
-                    createEndpoint: ()=>o1
-                    ,
-                    expose: ()=>l1
-                    ,
-                    proxy: ()=>g
-                    ,
-                    proxyMarker: ()=>r1
-                    ,
-                    releaseProxy: ()=>a1
-                    ,
-                    transfer: ()=>y
-                    ,
-                    transferHandlers: ()=>c1
-                    ,
-                    windowEndpoint: ()=>v
-                    ,
-                    wrap: ()=>f1
+        var e = {
+            870: (e, t, n)=>{
+                n.r(t), n.d(t, {
+                    createEndpoint: ()=>o,
+                    expose: ()=>l,
+                    proxy: ()=>g,
+                    proxyMarker: ()=>r,
+                    releaseProxy: ()=>a,
+                    transfer: ()=>y,
+                    transferHandlers: ()=>c,
+                    windowEndpoint: ()=>v,
+                    wrap: ()=>f
                 });
-                const r1 = Symbol("Comlink.proxy"), o1 = Symbol("Comlink.endpoint"), a1 = Symbol("Comlink.releaseProxy"), s1 = Symbol("Comlink.thrown"), i1 = (e)=>"object" == typeof e && null !== e || "function" == typeof e
-                , c1 = new Map([
+                const r = Symbol("Comlink.proxy"), o = Symbol("Comlink.endpoint"), a = Symbol("Comlink.releaseProxy"), s = Symbol("Comlink.thrown"), i = (e)=>"object" == typeof e && null !== e || "function" == typeof e, c = new Map([
                     [
                         "proxy",
                         {
-                            canHandle: (e)=>i1(e) && e[r1]
-                            ,
+                            canHandle: (e)=>i(e) && e[r],
                             serialize (e) {
                                 const { port1: t , port2: n  } = new MessageChannel;
-                                return l1(e, t), [
+                                return l(e, t), [
                                     n,
                                     [
                                         n
                                     ]
                                 ];
                             },
-                            deserialize: (e)=>(e.start(), f1(e))
+                            deserialize: (e)=>(e.start(), f(e))
                         }
                     ],
                     [
                         "throw",
                         {
-                            canHandle: (e)=>i1(e) && s1 in e
-                            ,
+                            canHandle: (e)=>i(e) && s in e,
                             serialize ({ value: e  }) {
                                 let t;
                                 return t = e instanceof Error ? {
@@ -128,94 +117,88 @@ function escapeSql(sqlStr) {
                         }
                     ]
                 ]);
-                function l1(e3, t3 = self) {
-                    t3.addEventListener("message", function n(r2) {
-                        if (!r2 || !r2.data) return;
+                function l(e, t = self) {
+                    t.addEventListener("message", function n(r) {
+                        if (!r || !r.data) return;
                         const { id: o , type: a , path: i  } = Object.assign({
                             path: []
-                        }, r2.data), c = (r2.data.argumentList || []).map(w);
+                        }, r.data), c = (r.data.argumentList || []).map(w);
                         let f;
                         try {
-                            const t4 = i.slice(0, -1).reduce((e, t)=>e[t]
-                            , e3), n = i.reduce((e, t)=>e[t]
-                            , e3);
+                            const t1 = i.slice(0, -1).reduce((e, t)=>e[t], e), n1 = i.reduce((e, t)=>e[t], e);
                             switch(a){
                                 case 0:
-                                    f = n;
+                                    f = n1;
                                     break;
                                 case 1:
-                                    t4[i.slice(-1)[0]] = w(r2.data.value), f = !0;
+                                    t1[i.slice(-1)[0]] = w(r.data.value), f = !0;
                                     break;
                                 case 2:
-                                    f = n.apply(t4, c);
+                                    f = n1.apply(t1, c);
                                     break;
                                 case 3:
-                                    f = g(new n(...c));
+                                    f = g(new n1(...c));
                                     break;
                                 case 4:
                                     {
-                                        const { port1: t , port2: n  } = new MessageChannel;
-                                        l1(e3, n), f = y(t, [
-                                            t
+                                        const { port1: t2 , port2: n2  } = new MessageChannel;
+                                        l(e, n2), f = y(t2, [
+                                            t2
                                         ]);
                                     }
                                     break;
                                 case 5:
                                     f = void 0;
                             }
-                        } catch (e4) {
+                        } catch (e1) {
                             f = {
-                                value: e4,
-                                [s1]: 0
+                                value: e1,
+                                [s]: 0
                             };
                         }
                         Promise.resolve(f).catch((e)=>({
                                 value: e,
-                                [s1]: 0
-                            })
-                        ).then((e)=>{
+                                [s]: 0
+                            })).then((e)=>{
                             const [r, s] = b(e);
-                            t3.postMessage(Object.assign(Object.assign({}, r), {
+                            t.postMessage(Object.assign(Object.assign({}, r), {
                                 id: o
-                            }), s), 5 === a && (t3.removeEventListener("message", n), u(t3));
+                            }), s), 5 === a && (t.removeEventListener("message", n), u(t));
                         });
-                    }), t3.start && t3.start();
+                    }), t.start && t.start();
                 }
-                function u(e5) {
+                function u(e) {
                     (function(e) {
                         return "MessagePort" === e.constructor.name;
-                    })(e5) && e5.close();
+                    })(e) && e.close();
                 }
-                function f1(e, t) {
+                function f(e, t) {
                     return d(e, [], t);
                 }
                 function p(e) {
                     if (e) throw new Error("Proxy has been released and is not useable");
                 }
-                function d(e6, t = [], n3 = function() {}) {
+                function d(e, t = [], n = function() {}) {
                     let r = !1;
-                    const s2 = new Proxy(n3, {
+                    const s = new Proxy(n, {
                         get (n, o) {
-                            if (p(r), o === a1) return ()=>E(e6, {
+                            if (p(r), o === a) return ()=>E(e, {
                                     type: 5,
-                                    path: t.map((e)=>e.toString()
-                                    )
+                                    path: t.map((e)=>e.toString())
                                 }).then(()=>{
-                                    u(e6), r = !0;
-                                })
-                            ;
+                                    u(e), r = !0;
+                                });
                             if ("then" === o) {
                                 if (0 === t.length) return {
-                                    then: ()=>s2
+                                    then: ()=>s
                                 };
-                                const n = E(e6, {
+                                const n1 = E(e, {
                                     type: 0,
-                                    path: t.map((e)=>e.toString()
-                                    )
+                                    path: t.map((e)=>e.toString())
                                 }).then(w);
-                                return n.then.bind(n);
+                                return n1.then.bind(n1);
                             }
-                            return d(e6, [
+                            return d(e, [
                                 ...t,
                                 o
                             ]);
@@ -223,51 +206,46 @@ function escapeSql(sqlStr) {
                         set (n, o, a) {
                             p(r);
                             const [s, i] = b(a);
-                            return E(e6, {
+                            return E(e, {
                                 type: 1,
                                 path: [
                                     ...t,
                                     o
-                                ].map((e)=>e.toString()
-                                ),
+                                ].map((e)=>e.toString()),
                                 value: s
                             }, i).then(w);
                         },
                         apply (n, a, s) {
                             p(r);
                             const i = t[t.length - 1];
-                            if (i === o1) return E(e6, {
+                            if (i === o) return E(e, {
                                 type: 4
                             }).then(w);
-                            if ("bind" === i) return d(e6, t.slice(0, -1));
+                            if ("bind" === i) return d(e, t.slice(0, -1));
                             const [c, l] = m(s);
-                            return E(e6, {
+                            return E(e, {
                                 type: 2,
-                                path: t.map((e)=>e.toString()
-                                ),
+                                path: t.map((e)=>e.toString()),
                                 argumentList: c
                             }, l).then(w);
                         },
                         construct (n, o) {
                             p(r);
                             const [a, s] = m(o);
-                            return E(e6, {
+                            return E(e, {
                                 type: 3,
-                                path: t.map((e)=>e.toString()
-                                ),
+                                path: t.map((e)=>e.toString()),
                                 argumentList: a
                             }, s).then(w);
                         }
                     });
-                    return s2;
+                    return s;
                 }
-                function m(e7) {
-                    const t = e7.map(b);
+                function m(e) {
+                    const t = e.map(b);
                     return [
-                        t.map((e)=>e[0]
-                        ),
-                        (n = t.map((e)=>e[1]
-                        ), Array.prototype.concat.apply([], n))
+                        t.map((e)=>e[0]),
+                        (n = t.map((e)=>e[1]), Array.prototype.concat.apply([], n))
                     ];
                     var n;
                 }
@@ -277,19 +255,18 @@ function escapeSql(sqlStr) {
                 }
                 function g(e) {
                     return Object.assign(e, {
-                        [r1]: !0
+                        [r]: !0
                     });
                 }
-                function v(e, t6 = self, n = "*") {
+                function v(e, t = self, n = "*") {
                     return {
-                        postMessage: (t, r)=>e.postMessage(t, n, r)
-                        ,
-                        addEventListener: t6.addEventListener.bind(t6),
-                        removeEventListener: t6.removeEventListener.bind(t6)
+                        postMessage: (t, r)=>e.postMessage(t, n, r),
+                        addEventListener: t.addEventListener.bind(t),
+                        removeEventListener: t.removeEventListener.bind(t)
                     };
                 }
                 function b(e) {
-                    for (const [t, n] of c1)if (n.canHandle(e)) {
+                    for (const [t, n] of c)if (n.canHandle(e)) {
                         const [r, o] = n.serialize(e);
                         return [
                             {
@@ -311,25 +288,24 @@ function escapeSql(sqlStr) {
                 function w(e) {
                     switch(e.type){
                         case 3:
-                            return c1.get(e.name).deserialize(e.value);
+                            return c.get(e.name).deserialize(e.value);
                         case 0:
                             return e.value;
                     }
                 }
-                function E(e, t7, n4) {
+                function E(e, t, n) {
                     return new Promise((r)=>{
-                        const o = new Array(4).fill(0).map(()=>Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16)
-                        ).join("-");
+                        const o = new Array(4).fill(0).map(()=>Math.floor(Math.random() * Number.MAX_SAFE_INTEGER).toString(16)).join("-");
                         e.addEventListener("message", function t(n) {
                             n.data && n.data.id && n.data.id === o && (e.removeEventListener("message", t), r(n.data));
                         }), e.start && e.start(), e.postMessage(Object.assign({
                             id: o
-                        }, t7), n4);
+                        }, t), n);
                     });
                 }
             },
-            162: function(e8, t8, n5) {
-                var r3 = this && this.__createBinding || (Object.create ? function(e, t, n, r) {
+            162: function(e, t, n) {
+                var r = this && this.__createBinding || (Object.create ? function(e, t, n, r) {
                     void 0 === r && (r = n), Object.defineProperty(e, r, {
                         enumerable: !0,
                         get: function() {
@@ -338,23 +314,23 @@ function escapeSql(sqlStr) {
                     });
                 } : function(e, t, n, r) {
                     void 0 === r && (r = n), e[r] = t[n];
-                }), o2 = this && this.__setModuleDefault || (Object.create ? function(e, t) {
+                }), o = this && this.__setModuleDefault || (Object.create ? function(e, t) {
                     Object.defineProperty(e, "default", {
                         enumerable: !0,
                         value: t
                     });
                 } : function(e, t) {
                     e.default = t;
-                }), a2 = this && this.__importStar || function(e) {
+                }), a = this && this.__importStar || function(e) {
                     if (e && e.__esModule) return e;
                     var t = {};
-                    if (null != e) for(var n in e)"default" !== n && Object.prototype.hasOwnProperty.call(e, n) && r3(t, e, n);
-                    return o2(t, e), t;
+                    if (null != e) for(var n in e)"default" !== n && Object.prototype.hasOwnProperty.call(e, n) && r(t, e, n);
+                    return o(t, e), t;
                 };
-                Object.defineProperty(t8, "__esModule", {
+                Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), t8.createDbWorker = void 0;
-                const s = a2(n5(870));
+                }), t.createDbWorker = void 0;
+                const s = a(n(870));
                 async function i(e) {
                     if (e.data && "eval" === e.data.action) {
                         const t = new Int32Array(e.data.notify, 0, 2), n = new Uint8Array(e.data.notify, 8);
@@ -363,9 +339,9 @@ function escapeSql(sqlStr) {
                             r = {
                                 ok: await u(e.data.request)
                             };
-                        } catch (t9) {
-                            console.error("worker request error", e.data.request, t9), r = {
-                                err: String(t9)
+                        } catch (t1) {
+                            console.error("worker request error", e.data.request, t1), r = {
+                                err: String(t1)
                             };
                         }
                         const o = (new TextEncoder).encode(JSON.stringify(r));
@@ -408,43 +384,42 @@ function escapeSql(sqlStr) {
                         const n = t[0];
                         if (!e.value.tagName) throw Error("tagName must be set for inserting");
                         const r = document.createElement(e.value.tagName);
-                        for (const t10 of l(e.value))if (null !== e.value[t10]) {
-                            if ("tagName" === t10 || "parent" === t10) continue;
-                            if ("idx" === t10 || "selector" === t10) throw Error(`${t10} can't be set`);
-                            r[t10] = e.value[t10];
+                        for (const t1 of l(e.value))if (null !== e.value[t1]) {
+                            if ("tagName" === t1 || "parent" === t1) continue;
+                            if ("idx" === t1 || "selector" === t1) throw Error(`${t1} can't be set`);
+                            r[t1] = e.value[t1];
                         }
                         return n.appendChild(r), null;
                     }
                     if ("update" === e.type) {
-                        const t = document.querySelector(e.value.selector);
-                        if (!t) throw Error(`Element ${e.value.selector} not found!`);
-                        const n = [];
-                        for (const r of l(e.value)){
-                            const o = e.value[r];
-                            if ("parent" !== r) {
-                                if ("idx" !== r && "selector" !== r && o !== t[r]) {
-                                    if (console.log("SETTING ", r, t[r], "->", o), "tagName" === r) throw Error("can't change tagName");
-                                    n.push(r);
+                        const t2 = document.querySelector(e.value.selector);
+                        if (!t2) throw Error(`Element ${e.value.selector} not found!`);
+                        const n1 = [];
+                        for (const r1 of l(e.value)){
+                            const o = e.value[r1];
+                            if ("parent" !== r1) {
+                                if ("idx" !== r1 && "selector" !== r1 && o !== t2[r1]) {
+                                    if (console.log("SETTING ", r1, t2[r1], "->", o), "tagName" === r1) throw Error("can't change tagName");
+                                    n1.push(r1);
                                 }
-                            } else if (o !== c(t.parentElement)) {
-                                const e = document.querySelectorAll(o);
-                                if (1 !== e.length) throw Error(`Invalid target parent: found ${e.length} matches`);
-                                e[0].appendChild(t);
+                            } else if (o !== c(t2.parentElement)) {
+                                const e1 = document.querySelectorAll(o);
+                                if (1 !== e1.length) throw Error(`Invalid target parent: found ${e1.length} matches`);
+                                e1[0].appendChild(t2);
                             }
                         }
-                        for (const r4 of n)t[r4] = e.value[r4];
+                        for (const r2 of n1)t2[r2] = e.value[r2];
                         return null;
                     }
                     throw Error(`unknown request ${e.type}`);
                 }
                 s.transferHandlers.set("WORKERSQLPROXIES", {
-                    canHandle: (e)=>!1
-                    ,
+                    canHandle: (e)=>!1,
                     serialize (e) {
                         throw Error("no");
                     },
                     deserialize: (e)=>(e.start(), s.wrap(e))
-                }), t8.createDbWorker = async function(e, t, n) {
+                }), t.createDbWorker = async function(e, t, n) {
                     const r = new Worker(t), o = s.wrap(r), a = await o.SplitFileHttpDatabase(n, e);
                     return r.addEventListener("message", i), {
                         db: a,
@@ -453,8 +428,8 @@ function escapeSql(sqlStr) {
                     };
                 };
             },
-            432: function(e9, t11, n6) {
-                var r5 = this && this.__createBinding || (Object.create ? function(e, t, n, r) {
+            432: function(e, t, n) {
+                var r = this && this.__createBinding || (Object.create ? function(e, t, n, r) {
                     void 0 === r && (r = n), Object.defineProperty(e, r, {
                         enumerable: !0,
                         get: function() {
@@ -464,34 +439,33 @@ function escapeSql(sqlStr) {
                 } : function(e, t, n, r) {
                     void 0 === r && (r = n), e[r] = t[n];
                 }), o = this && this.__exportStar || function(e, t) {
-                    for(var n in e)"default" === n || Object.prototype.hasOwnProperty.call(t, n) || r5(t, e, n);
+                    for(var n in e)"default" === n || Object.prototype.hasOwnProperty.call(t, n) || r(t, e, n);
                 };
-                Object.defineProperty(t11, "__esModule", {
+                Object.defineProperty(t, "__esModule", {
                     value: !0
-                }), o(n6(162), t11);
+                }), o(n(162), t);
             }
-        }, t1 = {};
-        function n1(r) {
-            var o = t1[r];
+        }, t = {};
+        function n(r) {
+            var o = t[r];
             if (void 0 !== o) return o.exports;
-            var a = t1[r] = {
+            var a = t[r] = {
                 exports: {}
             };
-            return e1[r].call(a.exports, a, a.exports, n1), a.exports;
+            return e[r].call(a.exports, a, a.exports, n), a.exports;
         }
-        return n1.d = (e, t)=>{
-            for(var r in t)n1.o(t, r) && !n1.o(e, r) && Object.defineProperty(e, r, {
+        return n.d = (e, t)=>{
+            for(var r in t)n.o(t, r) && !n.o(e, r) && Object.defineProperty(e, r, {
                 enumerable: !0,
                 get: t[r]
             });
-        }, n1.o = (e, t)=>Object.prototype.hasOwnProperty.call(e, t)
-        , n1.r = (e)=>{
+        }, n.o = (e, t)=>Object.prototype.hasOwnProperty.call(e, t), n.r = (e)=>{
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e, "__esModule", {
                 value: !0
             });
-        }, n1(432);
+        }, n(432);
     })();
 });
 let correctAudio, incorrectAudio;
@@ -516,8 +490,7 @@ function unlockAudio() {
     audioContext.resume();
 }
 function loadAudio(url) {
-    return fetch(url).then((response)=>response.arrayBuffer()
-    ).then((arrayBuffer)=>{
+    return fetch(url).then((response)=>response.arrayBuffer()).then((arrayBuffer)=>{
         return new Promise((resolve, reject)=>{
             audioContext.decodeAudioData(arrayBuffer, (audioBuffer)=>{
                 resolve(audioBuffer);
@@ -609,10 +582,7 @@ function pronounceHint(count) {
         const poses = pronounce.map((str, i)=>[
                 str,
                 i
-            ]
-        ).filter((x)=>!/^[a-z]$/.test(x[0])
-        ).map((x)=>x[1]
-        );
+            ]).filter((x)=>!/^[a-z]$/.test(x[0])).map((x)=>x[1]);
         const pos = poses[getRandomInt(0, poses.length)];
         holedPronounce = pronounce.map((x, i)=>{
             return i == pos ? x : "?";
@@ -623,16 +593,12 @@ function pronounceHint(count) {
             target: pronounce
         };
     } else {
-        const poses = pronounce.map((str, i)=>[
+        const poses1 = pronounce.map((str, i)=>[
                 str,
                 i
-            ]
-        ).filter((_, i)=>holedPronounce[i] == "?"
-        ).filter((x)=>!/^[a-z]$/.test(x[0])
-        ).map((x)=>x[1]
-        );
-        const pos = poses[getRandomInt(0, poses.length)];
-        if (pos) holedPronounce[pos] = pronounce[pos];
+            ]).filter((_, i)=>holedPronounce[i] == "?").filter((x)=>!/^[a-z]$/.test(x[0])).map((x)=>x[1]);
+        const pos1 = poses1[getRandomInt(0, poses1.length)];
+        if (pos1) holedPronounce[pos1] = pronounce[pos1];
         return {
             text: holedPronounce,
             type: "pronounce",
@@ -671,12 +637,9 @@ function wordHint(count) {
                     const poses = holedAnswer.split("").map((str, i)=>[
                             str,
                             i
-                        ]
-                    ).filter((x)=>x[0] == "？"
-                    ).map((x)=>x[1]
-                    );
-                    const pos = poses[getRandomInt(0, poses.length)];
-                    holedAnswer = holedAnswer.slice(0, pos) + answer[pos] + holedAnswer.slice(pos + 1);
+                        ]).filter((x)=>x[0] == "？").map((x)=>x[1]);
+                    const pos1 = poses[getRandomInt(0, poses.length)];
+                    holedAnswer = holedAnswer.slice(0, pos1) + answer[pos1] + holedAnswer.slice(pos1 + 1);
                     return {
                         text: holedAnswer,
                         type: "word",
@@ -688,8 +651,8 @@ function wordHint(count) {
             }
     }
 }
-function getHint(replyCount1) {
-    switch(replyCount1){
+function getHint(replyCount) {
+    switch(replyCount){
         case 1:
             return wordHint(1);
         case 3:
@@ -774,12 +737,10 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 function loadProblems() {
-    return fetch("pronounce.tsv").then((response)=>response.text()
-    ).then((text)=>{
+    return fetch("pronounce.tsv").then((response)=>response.text()).then((text)=>{
         document.getElementById("loading").classList.remove("d-none");
         const arr = text.trimEnd().split("\n");
-        gradePoses = arr[0].split(",").map((x)=>parseInt(x)
-        );
+        gradePoses = arr[0].split(",").map((x)=>parseInt(x));
         arr.slice(1).forEach((line)=>{
             vocabularies.push(line.split("\t"));
         });
@@ -810,11 +771,11 @@ function loadRensoWorker() {
     ], "/rensole-zh/sql.js-httpvfs/sqlite.worker.js", "/rensole-zh/sql.js-httpvfs/sql-wasm.wasm");
 }
 function loadProblemVectors() {
-    const promises = [
+    const promises1 = [
         getSiminyms(answer),
         getWordVector(answer), 
     ];
-    return Promise.all(promises).then((result)=>{
+    return Promise.all(promises1).then((result)=>{
         mostSimilars = result[0];
         answerVector = result[1];
         document.getElementById("searchText").focus();
@@ -836,11 +797,11 @@ async function loadWorkers() {
     const obj = document.getElementById("grade");
     const pos = gradePoses[obj.selectedIndex];
     problems = vocabularies.slice(0, pos);
-    const promises = [
+    const promises1 = [
         loadSiminymWorker(),
         loadRensoWorker(), 
     ];
-    await Promise.all(promises).then((workers)=>{
+    await Promise.all(promises1).then((workers)=>{
         siminymWorker = workers[0];
         rensoleWorker = workers[1];
         changeProblem();
