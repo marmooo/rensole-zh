@@ -64,19 +64,19 @@ function escapeSql(sqlStr) {
                 n.r(t), n.d(t, {
                     createEndpoint: ()=>o,
                     expose: ()=>l,
-                    proxy: ()=>g,
+                    proxy: ()=>v,
                     proxyMarker: ()=>r,
                     releaseProxy: ()=>a,
                     transfer: ()=>y,
                     transferHandlers: ()=>c,
-                    windowEndpoint: ()=>v,
+                    windowEndpoint: ()=>g,
                     wrap: ()=>f
                 });
-                const r = Symbol("Comlink.proxy"), o = Symbol("Comlink.endpoint"), a = Symbol("Comlink.releaseProxy"), s = Symbol("Comlink.thrown"), i = (e)=>"object" == typeof e && null !== e || "function" == typeof e, c = new Map([
+                const r = Symbol("Comlink.proxy"), o = Symbol("Comlink.endpoint"), a = Symbol("Comlink.releaseProxy"), i = Symbol("Comlink.thrown"), s = (e)=>"object" == typeof e && null !== e || "function" == typeof e, c = new Map([
                     [
                         "proxy",
                         {
-                            canHandle: (e)=>i(e) && e[r],
+                            canHandle: (e)=>s(e) && e[r],
                             serialize (e) {
                                 const { port1: t , port2: n  } = new MessageChannel;
                                 return l(e, t), [
@@ -92,7 +92,7 @@ function escapeSql(sqlStr) {
                     [
                         "throw",
                         {
-                            canHandle: (e)=>i(e) && s in e,
+                            canHandle: (e)=>s(e) && i in e,
                             serialize ({ value: e  }) {
                                 let t;
                                 return t = e instanceof Error ? {
@@ -120,24 +120,24 @@ function escapeSql(sqlStr) {
                 function l(e, t = self) {
                     t.addEventListener("message", function n(r) {
                         if (!r || !r.data) return;
-                        const { id: o , type: a , path: i  } = Object.assign({
+                        const { id: o , type: a , path: s  } = Object.assign({
                             path: []
                         }, r.data), c = (r.data.argumentList || []).map(w);
                         let f;
                         try {
-                            const t1 = i.slice(0, -1).reduce((e, t)=>e[t], e), n1 = i.reduce((e, t)=>e[t], e);
+                            const t1 = s.slice(0, -1).reduce((e, t)=>e[t], e), n1 = s.reduce((e, t)=>e[t], e);
                             switch(a){
                                 case 0:
                                     f = n1;
                                     break;
                                 case 1:
-                                    t1[i.slice(-1)[0]] = w(r.data.value), f = !0;
+                                    t1[s.slice(-1)[0]] = w(r.data.value), f = !0;
                                     break;
                                 case 2:
                                     f = n1.apply(t1, c);
                                     break;
                                 case 3:
-                                    f = g(new n1(...c));
+                                    f = v(new n1(...c));
                                     break;
                                 case 4:
                                     {
@@ -153,17 +153,17 @@ function escapeSql(sqlStr) {
                         } catch (e1) {
                             f = {
                                 value: e1,
-                                [s]: 0
+                                [i]: 0
                             };
                         }
                         Promise.resolve(f).catch((e)=>({
                                 value: e,
-                                [s]: 0
+                                [i]: 0
                             })).then((e)=>{
-                            const [r, s] = b(e);
+                            const [r, i] = b(e);
                             t.postMessage(Object.assign(Object.assign({}, r), {
                                 id: o
-                            }), s), 5 === a && (t.removeEventListener("message", n), u(t));
+                            }), i), 5 === a && (t.removeEventListener("message", n), u(t));
                         });
                     }), t.start && t.start();
                 }
@@ -180,7 +180,7 @@ function escapeSql(sqlStr) {
                 }
                 function d(e, t = [], n = function() {}) {
                     let r = !1;
-                    const s = new Proxy(n, {
+                    const i = new Proxy(n, {
                         get (n, o) {
                             if (p(r), o === a) return ()=>E(e, {
                                     type: 5,
@@ -190,7 +190,7 @@ function escapeSql(sqlStr) {
                                 });
                             if ("then" === o) {
                                 if (0 === t.length) return {
-                                    then: ()=>s
+                                    then: ()=>i
                                 };
                                 const n1 = E(e, {
                                     type: 0,
@@ -205,24 +205,24 @@ function escapeSql(sqlStr) {
                         },
                         set (n, o, a) {
                             p(r);
-                            const [s, i] = b(a);
+                            const [i, s] = b(a);
                             return E(e, {
                                 type: 1,
                                 path: [
                                     ...t,
                                     o
                                 ].map((e)=>e.toString()),
-                                value: s
-                            }, i).then(w);
+                                value: i
+                            }, s).then(w);
                         },
-                        apply (n, a, s) {
+                        apply (n, a, i) {
                             p(r);
-                            const i = t[t.length - 1];
-                            if (i === o) return E(e, {
+                            const s = t[t.length - 1];
+                            if (s === o) return E(e, {
                                 type: 4
                             }).then(w);
-                            if ("bind" === i) return d(e, t.slice(0, -1));
-                            const [c, l] = m(s);
+                            if ("bind" === s) return d(e, t.slice(0, -1));
+                            const [c, l] = m(i);
                             return E(e, {
                                 type: 2,
                                 path: t.map((e)=>e.toString()),
@@ -231,15 +231,15 @@ function escapeSql(sqlStr) {
                         },
                         construct (n, o) {
                             p(r);
-                            const [a, s] = m(o);
+                            const [a, i] = m(o);
                             return E(e, {
                                 type: 3,
                                 path: t.map((e)=>e.toString()),
                                 argumentList: a
-                            }, s).then(w);
+                            }, i).then(w);
                         }
                     });
-                    return s;
+                    return i;
                 }
                 function m(e) {
                     const t = e.map(b);
@@ -253,12 +253,12 @@ function escapeSql(sqlStr) {
                 function y(e, t) {
                     return h.set(e, t), e;
                 }
-                function g(e) {
+                function v(e) {
                     return Object.assign(e, {
                         [r]: !0
                     });
                 }
-                function v(e, t = self, n = "*") {
+                function g(e, t = self, n = "*") {
                     return {
                         postMessage: (t, r)=>e.postMessage(t, n, r),
                         addEventListener: t.addEventListener.bind(t),
@@ -330,8 +330,8 @@ function escapeSql(sqlStr) {
                 Object.defineProperty(t, "__esModule", {
                     value: !0
                 }), t.createDbWorker = void 0;
-                const s = a(n(870));
-                async function i(e) {
+                const i = a(n(870));
+                async function s(e) {
                     if (e.data && "eval" === e.data.action) {
                         const t = new Int32Array(e.data.notify, 0, 2), n = new Uint8Array(e.data.notify, 8);
                         let r;
@@ -413,17 +413,17 @@ function escapeSql(sqlStr) {
                     }
                     throw Error(`unknown request ${e.type}`);
                 }
-                s.transferHandlers.set("WORKERSQLPROXIES", {
+                i.transferHandlers.set("WORKERSQLPROXIES", {
                     canHandle: (e)=>!1,
                     serialize (e) {
                         throw Error("no");
                     },
-                    deserialize: (e)=>(e.start(), s.wrap(e))
-                }), t.createDbWorker = async function(e, t, n) {
-                    const r = new Worker(t), o = s.wrap(r), a = await o.SplitFileHttpDatabase(n, e);
-                    return r.addEventListener("message", i), {
-                        db: a,
-                        worker: o,
+                    deserialize: (e)=>(e.start(), i.wrap(e))
+                }), t.createDbWorker = async function(e, t, n, r = 1 / 0) {
+                    const o = new Worker(t), a = i.wrap(o), c = await a.SplitFileHttpDatabase(n, e, void 0, r);
+                    return o.addEventListener("message", s), {
+                        db: c,
+                        worker: a,
                         configs: e
                     };
                 };
