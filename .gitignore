@@ -1,9 +1,9 @@
-.direnv/
-.envrc
+.venv/
 node_modules/
 cc.zh.300.vec
 cc.zh.300-small.vec
 cc.zh.300-small.magnitude
-remote.db
 jieba
+remote.db
+siminym-zh-repo
 siminym-zh

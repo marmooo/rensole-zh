@@ -1,0 +1,34 @@
+[project]
+name = "rensole-zh"
+version = "0.1.0"
+description = "一个利用单词之间相似性的联想游戏。"
+authors = [
+    { name = "marmooo", email = "marmooo@users.noreply.github.com" }
+]
+dependencies = [
+    "pymagnitude~=0.1.143",
+    "fasteners~=0.18",
+    "annoy~=1.17.2",
+    "numpy~=1.24.3",
+    "xxhash~=3.2.0",
+    "lz4~=4.3.2",
+    "h5py~=3.8.0",
+    "torch~=2.0.1",
+]
+readme = "README.md"
+requires-python = ">= 3.9"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff~=0.0.270",
+    "black~=23.3.0",
+    "isort~=5.12.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true

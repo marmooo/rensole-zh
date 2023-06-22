@@ -2,6 +2,11 @@
 
 [一个利用单词之间相似性的联想游戏](https://marmooo.github.io/rensole-en/)。
 
+## Requirements
+
+- [rye](https://github.com/mitsuhiko/rye)
+- `sudo apt install clang` for [spotify/annoy](https://github.com/spotify/annoy)
+
 ## Installation
 
 - install [fxsjy/jieba](https://github.com/fxsjy/jieba) licensed under the MIT
@@ -12,6 +17,7 @@
 - install [marmooo/siminym-zh](https://github.com/marmooo/siminym-zh) licensed
   under the [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 - `npm install`
+- `rye sync`
 
 ## Build
 
