@@ -1,5 +1,5 @@
 import { readLines } from "https://deno.land/std/io/mod.ts";
-import pinyin from "https://esm.sh/pinyin@2.11.0";
+import pinyin from "npm:pinyin@2.11.0";
 
 async function loadJiebaDict() {
   const dict = [];
@@ -27,7 +27,7 @@ async function build(grades, threshold) {
     if (i >= threshold) break;
     const word = jiebaDict[i][0];
     if (word.length == 1) continue;
-    if (i == grades[gradePos] - 1) {
+    if (i >= grades[gradePos] - 1) {
       poses.push(words.length);
       gradePos += 1;
     }
