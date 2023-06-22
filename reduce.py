@@ -1,5 +1,5 @@
 words = {}
-with open("siminym-zh/all.lst") as f:
+with open("siminym-zh-repo/all.lst") as f:
     for line in f:
         word = line.split(",", 1)[0]
         words[word] = True
