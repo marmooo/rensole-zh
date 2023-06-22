@@ -8,7 +8,6 @@ var urlsToCache = [
   "/rensole-zh/favicon/favicon.svg",
   "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
-  "https://cdn.jsdelivr.net/npm/mathjs@10.4.3/lib/browser/math.js",
 ];
 
 self.addEventListener("install", function (event) {
