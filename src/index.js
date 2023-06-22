@@ -221,6 +221,26 @@ function showAnswer(cleared) {
   document.getElementById("restart").focus();
 }
 
+function norm(vector) {
+  let sumOfSquares = 0;
+  for (let i = 0; i < vector.length; i++) {
+    sumOfSquares += Math.pow(vector[i], 2);
+  }
+  const result = Math.sqrt(sumOfSquares);
+  return result;
+}
+
+function dot(vector1, vector2) {
+  if (vector1.length !== vector2.length) {
+    throw new Error("The vectors have different lengths.");
+  }
+  let result = 0;
+  for (let i = 0; i < vector1.length; i++) {
+    result += vector1[i] * vector2[i];
+  }
+  return result;
+}
+
 function search() {
   const searchText = document.getElementById("searchText");
   const word = searchText.value;
@@ -235,7 +255,7 @@ function search() {
         }
       } else {
         const a = answerVector;
-        const similarity = math.dot(a, b) / (math.norm(a) * math.norm(b));
+        const similarity = dot(a, b) / (norm(a) * norm(b));
         const template = document.createElement("template");
         const m = mostSimilars[replyCount];
         const hint = getHint(replyCount);
