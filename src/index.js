@@ -51,9 +51,18 @@ function loadAudios() {
 }
 
 function loadConfig() {
-  loadGrade();
   if (localStorage.getItem("darkMode") == 1) {
-    document.documentElement.dataset.theme = "dark";
+    document.documentElement.setAttribute("data-bs-theme", "dark");
+  }
+}
+
+function toggleDarkMode() {
+  if (localStorage.getItem("darkMode") == 1) {
+    localStorage.setItem("darkMode", 0);
+    document.documentElement.setAttribute("data-bs-theme", "light");
+  } else {
+    localStorage.setItem("darkMode", 1);
+    document.documentElement.setAttribute("data-bs-theme", "dark");
   }
 }
 
@@ -68,16 +77,6 @@ function loadGrade() {
         g.selected = false;
       }
     });
-  }
-}
-
-function toggleDarkMode() {
-  if (localStorage.getItem("darkMode") == 1) {
-    localStorage.setItem("darkMode", 0);
-    delete document.documentElement.dataset.theme;
-  } else {
-    localStorage.setItem("darkMode", 1);
-    document.documentElement.dataset.theme = "dark";
   }
 }
 
@@ -396,6 +395,7 @@ let holedPronounce;
 let rensoleWorker;
 let siminymWorker;
 loadConfig();
+loadGrade();
 loadProblems();
 
 document.addEventListener("keydown", function (event) {
