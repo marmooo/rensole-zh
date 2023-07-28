@@ -1,54 +1,11 @@
 import { escapeSql } from "https://deno.land/x/escape/mod.ts";
 import { createDbWorker } from "../node_modules/sql.js-httpvfs/dist/index.js";
 
-let correctAudio, incorrectAudio;
-loadAudios();
-const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
-
-function playAudio(audioBuffer, volume) {
-  const audioSource = audioContext.createBufferSource();
-  audioSource.buffer = audioBuffer;
-  if (volume) {
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = volume;
-    gainNode.connect(audioContext.destination);
-    audioSource.connect(gainNode);
-    audioSource.start();
-  } else {
-    audioSource.connect(audioContext.destination);
-    audioSource.start();
-  }
-}
-
-function unlockAudio() {
-  audioContext.resume();
-}
-
-function loadAudio(url) {
-  return fetch(url)
-    .then((response) => response.arrayBuffer())
-    .then((arrayBuffer) => {
-      return new Promise((resolve, reject) => {
-        audioContext.decodeAudioData(arrayBuffer, (audioBuffer) => {
-          resolve(audioBuffer);
-        }, (err) => {
-          reject(err);
-        });
-      });
-    });
-}
-
-function loadAudios() {
-  promises = [
-    loadAudio("mp3/correct3.mp3"),
-    loadAudio("mp3/incorrect1.mp3"),
-  ];
-  Promise.all(promises).then((audioBuffers) => {
-    correctAudio = audioBuffers[0];
-    incorrectAudio = audioBuffers[1];
-  });
-}
+const audioBufferCache = {};
+loadAudio("correct", "mp3/correct3.mp3");
+loadAudio("incorrect", "mp3/incorrect1.mp3");
+loadConfig();
 
 function loadConfig() {
   if (localStorage.getItem("darkMode") == 1) {
@@ -64,6 +21,35 @@ function toggleDarkMode() {
     localStorage.setItem("darkMode", 1);
     document.documentElement.setAttribute("data-bs-theme", "dark");
   }
+}
+
+async function playAudio(name, volume) {
+  const audioBuffer = await loadAudio(name, audioBufferCache[name]);
+  const sourceNode = audioContext.createBufferSource();
+  sourceNode.buffer = audioBuffer;
+  if (volume) {
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = volume;
+    gainNode.connect(audioContext.destination);
+    sourceNode.connect(gainNode);
+    sourceNode.start();
+  } else {
+    sourceNode.connect(audioContext.destination);
+    sourceNode.start();
+  }
+}
+
+async function loadAudio(name, url) {
+  if (audioBufferCache[name]) return audioBufferCache[name];
+  const response = await fetch(url);
+  const arrayBuffer = await response.arrayBuffer();
+  const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+  audioBufferCache[name] = audioBuffer;
+  return audioBuffer;
+}
+
+function unlockAudio() {
+  audioContext.resume();
 }
 
 function loadGrade() {
@@ -394,13 +380,12 @@ let holedAnswer;
 let holedPronounce;
 let rensoleWorker;
 let siminymWorker;
-loadConfig();
 loadGrade();
 loadProblems();
 
-document.addEventListener("keydown", function (event) {
+document.addEventListener("keydown", (event) => {
   if (event.key == "Enter") search();
-}, false);
+});
 document.getElementById("toggleDarkMode").onclick = toggleDarkMode;
 document.getElementById("search").onclick = search;
 document.getElementById("restart").onclick = changeProblem;
