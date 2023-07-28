@@ -1,10 +1,12 @@
-var CACHE_NAME = "2023-07-11 09:35";
+var CACHE_NAME = "2023-07-28 20:50";
 var urlsToCache = [
   "/rensole-zh/",
   "/rensole-zh/index.js",
   "/rensole-zh/pronounce.tsv",
   "/rensole-zh/sql.js-httpvfs/sql-wasm.wasm",
   "/rensole-zh/sql.js-httpvfs/sqlite.worker.js",
+  "/rensole-zh/mp3/incorrect1.mp3",
+  "/rensole-zh/mp3/correct3.mp3",
   "/rensole-zh/favicon/favicon.svg",
   "https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css",
 ];
