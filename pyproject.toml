@@ -7,16 +7,19 @@ authors = [
 ]
 dependencies = [
     "pymagnitude~=0.1.143",
-    "fasteners~=0.18",
-    "annoy~=1.17.2",
+    "fasteners>=0.19",
+    "annoy>=1.17.3",
     "numpy~=1.24.3",
-    "xxhash~=3.2.0",
-    "lz4~=4.3.2",
-    "h5py~=3.8.0",
-    "torch~=2.0.1",
+    "xxhash>=3.4.1",
+    "lz4>=4.3.3",
+    "h5py>=3.10.0",
+    "torch>=2.1.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.9"
+
+[project.scripts]
+hello = "rensole_zh:hello"
 
 [build-system]
 requires = ["hatchling"]
@@ -25,10 +28,11 @@ build-backend = "hatchling.build"
 [tool.rye]
 managed = true
 dev-dependencies = [
-    "ruff~=0.0.270",
-    "black~=23.3.0",
-    "isort~=5.12.0",
+    "ruff>=0.1.13",
 ]
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["python/rensole_zh"]
