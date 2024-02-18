@@ -1,4 +1,4 @@
-const CACHE_NAME = "2024-01-21 09:30";
+const CACHE_NAME = "2024-02-18 15:00";
 const urlsToCache = [
   "/rensole-zh/",
   "/rensole-zh/index.js",
