@@ -5,7 +5,8 @@
 ## Requirements
 
 - [rye](https://github.com/mitsuhiko/rye)
-- `sudo apt install clang` for [spotify/annoy](https://github.com/spotify/annoy)
+- `sudo apt install clang libstdc++-12-dev` for
+  [spotify/annoy](https://github.com/spotify/annoy)
 
 ## Installation
 
