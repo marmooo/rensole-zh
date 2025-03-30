@@ -1,5 +1,5 @@
 import { TextLineStream } from "@std/streams";
-import pinyin from "npm:pinyin@2.11.0";
+import pinyin from "pinyin";
 
 async function loadJiebaDict() {
   const dict = [];
