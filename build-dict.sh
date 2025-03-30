@@ -1,4 +1,4 @@
-deno run --allow-read --allow-write game.js
+deno run -RW game.js
 rye run python reduce.py
 rye run python -m pymagnitude.converter \
   -i cc.zh.300-small.vec \
