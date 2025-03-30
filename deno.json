@@ -1,0 +1,6 @@
+{
+  "nodeModulesDir": "auto",
+  "imports": {
+    "sql.js-httpvfs": "npm:sql.js-httpvfs@0.8.12"
+  }
+}
