@@ -1,4 +1,4 @@
-import { TextLineStream } from "jsr:@std/streams/text-line-stream";
+import { TextLineStream } from "@std/streams";
 import pinyin from "npm:pinyin@2.11.0";
 
 async function loadJiebaDict() {
