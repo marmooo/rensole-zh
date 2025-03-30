@@ -13,10 +13,9 @@
 - install
   [cc.zh.300.vec.gz](https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.zh.300.vec.gz)
   from [fastText](https://fasttext.cc/docs/en/crawl-vectors.html) licensed under
-  the [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
+  the [CC-BY-SA-3.0](https://creativecommons.org/licenses/by-sa/3.0/)
 - install [marmooo/siminym-zh](https://github.com/marmooo/siminym-zh) licensed
-  under the [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-- `npm install`
+  under the [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 - `rye sync`
 
 ## Build
@@ -34,4 +33,4 @@ bash build.sh
 
 ## License
 
-CC BY-SA 4.0
+CC-BY-SA-4.0
