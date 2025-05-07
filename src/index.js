@@ -1,4 +1,3 @@
-import { escapeSql } from "https://deno.land/x/escape/mod.ts";
 import { createDbWorker } from "../node_modules/sql.js-httpvfs/dist/index.js";
 
 let audioContext;
@@ -87,32 +86,25 @@ function loadGrade() {
   }
 }
 
-function getWordVector(lemma) {
-  return rensoleWorker.db.query(
-    `SELECT * FROM magnitude WHERE key="${escapeSql(lemma)}"`,
-  ).then((row) => {
-    if (row[0]) {
-      const vector = new Array(300);
-      for (const [k, v] of Object.entries(row[0])) {
-        if (k.startsWith("dim_")) {
-          const pos = parseInt(k.slice(4));
-          vector[pos] = v;
-        }
-      }
-      return vector;
+async function getWordVector(lemma) {
+  const row = await rensoleWorker.getWordVector.getAsObject([lemma]);
+  if (!row.key) return;
+  const vector = new Array(300);
+  for (const [k, v] of Object.entries(row)) {
+    if (k.startsWith("dim_")) {
+      const pos = parseInt(k.slice(4));
+      vector[pos] = v;
     }
-  });
+  }
+  return vector;
 }
 
-function getSiminyms(lemma) {
-  return siminymWorker.db.query(
-    `SELECT words FROM siminyms WHERE lemma="${escapeSql(lemma)}"`,
-  ).then((row) => {
-    if (row[0]) {
-      const words = JSON.parse(row[0].words);
-      return words.reverse();
-    }
-  });
+async function getSiminyms(lemma) {
+  const row = await siminymWorker.getSiminyms.getAsObject([lemma]);
+  if (row.words) {
+    const words = JSON.parse(row.words);
+    return words.reverse();
+  }
 }
 
 function showHint(hint) {
@@ -247,42 +239,41 @@ function dot(vector1, vector2) {
   return result;
 }
 
-function search() {
+async function search() {
   const searchText = document.getElementById("searchText");
   const word = searchText.value;
-  getWordVector(word).then((b) => {
-    if (b) {
-      document.getElementById("notExisted").classList.add("invisible");
-      if (replyCount >= 10) {
-        if (word == answer) {
-          showAnswer(true);
-        } else {
-          showAnswer(false);
-        }
+  const b = await getWordVector(word);
+  if (b) {
+    document.getElementById("notExisted").classList.add("invisible");
+    if (replyCount >= 10) {
+      if (word == answer) {
+        showAnswer(true);
       } else {
-        const a = answerVector;
-        const similarity = dot(a, b) / (norm(a) * norm(b));
-        const template = document.createElement("template");
-        const m = mostSimilars[replyCount];
-        const hint = getHint(replyCount);
-        template.innerHTML = `
-          <tr>
-            <td>${word}</td><td>${similarity.toFixed(3)}</td>
-            <td>${m[0]}</td><td>${m[1].toFixed(3)}</td>
-            <td>${showHint(hint)}</td></td>
-          </tr>
-        `;
-        const renso = document.getElementById("renso");
-        const tr = template.content.firstElementChild;
-        renso.insertBefore(tr, renso.firstChild);
-        if (word == answer) showAnswer(true);
+        showAnswer(false);
       }
-      replyCount += 1;
     } else {
-      document.getElementById("notExisted").classList.remove("invisible");
+      const a = answerVector;
+      const similarity = dot(a, b) / (norm(a) * norm(b));
+      const template = document.createElement("template");
+      const m = mostSimilars[replyCount];
+      const hint = getHint(replyCount);
+      template.innerHTML = `
+        <tr>
+          <td>${word}</td><td>${similarity.toFixed(3)}</td>
+          <td>${m[0]}</td><td>${m[1].toFixed(3)}</td>
+          <td>${showHint(hint)}</td></td>
+        </tr>
+      `;
+      const renso = document.getElementById("renso");
+      const tr = template.content.firstElementChild;
+      renso.insertBefore(tr, renso.firstChild);
+      if (word == answer) showAnswer(true);
     }
-    searchText.value = "";
-  });
+    replyCount += 1;
+  } else {
+    document.getElementById("notExisted").classList.remove("invisible");
+  }
+  searchText.value = "";
 }
 
 function getRandomInt(min, max) {
@@ -291,21 +282,19 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function loadProblems() {
-  return fetch("pronounce.tsv")
-    .then((response) => response.text())
-    .then((text) => {
-      document.getElementById("loading").classList.remove("d-none");
-      const arr = text.trimEnd().split("\n");
-      gradePoses = arr[0].split(",").map((x) => parseInt(x));
-      arr.slice(1).forEach((line) => {
-        vocabularies.push(line.split("\t"));
-      });
-      loadWorkers();
-    });
+async function loadProblems() {
+  const response = await fetch("pronounce.tsv");
+  const text = await response.text();
+  document.getElementById("loading").classList.remove("d-none");
+  const arr = text.trimEnd().split("\n");
+  gradePoses = arr[0].split(",").map((x) => parseInt(x));
+  arr.slice(1).forEach((line) => {
+    vocabularies.push(line.split("\t"));
+  });
+  loadWorkers();
 }
 
-function loadSiminymWorker() {
+async function loadSiminymWorker() {
   let grade = localStorage.getItem("rensole-zh");
   if (!grade) {
     const obj = document.getElementById("grade");
@@ -315,36 +304,35 @@ function loadSiminymWorker() {
     from: "jsonconfig",
     configUrl: `/siminym-zh/db/${grade}/config.json`,
   };
-  return createDbWorker(
+  return await createDbWorker(
     [config],
     "/siminym-zh/sql.js-httpvfs/sqlite.worker.js",
     "/siminym-zh/sql.js-httpvfs/sql-wasm.wasm",
   );
 }
 
-function loadRensoWorker() {
+async function loadRensoWorker() {
   const config = {
     from: "jsonconfig",
     configUrl: "/rensole-zh/db/config.json",
   };
-  return createDbWorker(
+  return await createDbWorker(
     [config],
     "/rensole-zh/sql.js-httpvfs/sqlite.worker.js",
     "/rensole-zh/sql.js-httpvfs/sql-wasm.wasm",
   );
 }
 
-function loadProblemVectors() {
+async function loadProblemVectors() {
   const promises = [
     getSiminyms(answer),
     getWordVector(answer),
   ];
-  return Promise.all(promises).then((result) => {
-    mostSimilars = result[0];
-    answerVector = result[1];
-    document.getElementById("searchText").focus();
-    document.getElementById("loading").classList.add("d-none");
-  });
+  const result = await Promise.all(promises);
+  mostSimilars = result[0];
+  answerVector = result[1];
+  document.getElementById("searchText").focus();
+  document.getElementById("loading").classList.add("d-none");
 }
 
 async function changeProblem() {
@@ -367,19 +355,24 @@ async function loadWorkers() {
     loadSiminymWorker(),
     loadRensoWorker(),
   ];
-  await Promise.all(promises).then((workers) => {
-    // if (siminymWorker) {
-    //   siminymWorker.db.close();
-    //   siminymWorker.worker.terminate();  // TODO: Comlink 4.3.1
-    // }
-    // if (rensoleWorker) {
-    //   rensoleWorker.db.close();
-    //   siminymWorker.worker.terminate();  // TODO: Comlink 4.3.1
-    // }
-    siminymWorker = workers[0];
-    rensoleWorker = workers[1];
-    changeProblem();
-  });
+  const workers = await Promise.all(promises);
+  // if (siminymWorker) {
+  //   siminymWorker.db.close();
+  //   siminymWorker.worker.terminate();  // TODO: Comlink 4.3.1
+  // }
+  // if (rensoleWorker) {
+  //   rensoleWorker.db.close();
+  //   siminymWorker.worker.terminate();  // TODO: Comlink 4.3.1
+  // }
+  siminymWorker = workers[0];
+  rensoleWorker = workers[1];
+  siminymWorker.getSiminyms = await siminymWorker.db.prepare(
+    `SELECT words FROM siminyms WHERE lemma=?`,
+  );
+  rensoleWorker.getWordVector = await rensoleWorker.db.prepare(
+    `SELECT * FROM magnitude WHERE key=?`,
+  );
+  changeProblem();
 }
 
 function changeGrade() {
