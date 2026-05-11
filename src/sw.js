@@ -1,4 +1,4 @@
-const cacheName = "2025-12-31 00:00";
+const cacheName = "2026-05-11 00:00";
 const urlsToCache = [
   "/rensole-zh/index.js",
   "/rensole-zh/pronounce.tsv",
